@@ -1,0 +1,779 @@
+if not LPH_OBFUSCATED then
+    LPH_JIT_MAX = function(...)
+        return (...)
+    end -- // Splitta & Hook
+    LPH_JIT_ULTRA = function(...)
+        return (...)
+    end -- // Splitta & Hook
+end -- // Splitta & Hook
+
+
+LPH_JIT_MAX(
+    function()
+        getgenv().Function = {
+            ["Main"] = {
+                ["UserInterFace"] = false, -- // Splitta & Hook
+                ["Keybind"] = "V",
+                ["VisibleText"] = false
+            }, -- // Splitta & Hook
+            ["Title"] = {
+                Text = "practice peace",
+                Extension = {
+                    Fringe = "(",
+                    End = ")"
+                },
+                ["Size"] = 15
+            },
+            ["Scale"] = ({
+                X = 10 * 10,
+                Y = 10 * 1
+            }),
+            ["Color"] = {
+                Inline = Color3.fromRGB(255, 246, 180),
+                Outline = Color3.fromRGB()
+            },
+            ["Fade Speed"] = {
+                ["Intro"] = 0.1,
+                ["Outro"] = 0.01
+            },
+            ["Link"] = {
+                ["Check"] = {
+                    ["Team"] = false,
+                    ["IsDead"] = true,
+                    ["Visible"] = true,
+                    ["Resolver"] = false
+                },
+                ["Field"] = {
+                    ["Visual"] = {
+                        ["Enabled"] = true, -- // Splitta & Hook
+                        ["Keybind"] = "T",
+                        ["Radius"] = 100.2,
+                        ["Inline"] = {
+                            Transparency = 0.4,
+                            Color = Color3.fromRGB(255, 255, 255)
+                        },
+                        ["Outline"] = {
+                            Transparency = 0.65,
+                            Color = Color3.fromRGB(0, 0, 0)
+                        },
+                        ["Control"] = {
+                            ["Stick To Target"] = true
+                        }
+                    }
+                }
+            },
+            ["Aiming"] = {
+                ["Redirection"] = {
+                    ["Extension"] = {
+                        Fringe = "{",
+                        End = "}"
+                    },
+                    ["Tab"] = {
+                        Enabled = true,
+                        ["Keybind"] = "Q"
+                    },
+                    ["HitPart"] = {
+                        ["Target"] = "Head",
+                        ["Revaluate"] = {
+                            Enabled = false,
+                            ["Origin"] = "Humanoid"
+                        },
+                        ["Validated Part"] = {"Head", "HumanoidRootPart"}
+                    },
+                    ["HitChance"] = {
+                        Enabled = false,
+                        ["Amount"] = 100
+                    },
+                    ["Prediction"] = {
+                        Enabled = false,
+                        ["Amount"] = 0
+                    },
+                    ["Panel"] = {
+                        Method = "FindPartOnRayWithIgnoreList",
+                        ["Target"] = {
+                            Enabled = false,
+                            ["Keybind"] = "E",
+                            ["Player"] = nil,
+                            ["Position"] = {
+                                From = "Head"
+                            }
+                        }
+                    },
+                    ["IndicateMousePos"] = {
+                        Enabled = true
+                    },
+                    ["Drawing"] = {
+                        ["Color1"] = Color3.new(211, 211, 211),
+                        ["Color2"] = Color3.new(128, 0, 0),
+                        ["Indication Color"] = Color3.new(255, 0, 0),
+                        ["Line Color"] = Color3.new(255, 255, 255),
+                        ["Line Outline Color"] = Color3.new(0, 0, 0)
+                    }
+                },
+                ["Aimbot"] = {
+                    ["Panel"] = {
+                        Enabled = false,
+                        Keybind = {
+                            ["Enabled"] = "F",
+                            ["Disabled"] = "G"
+                        },
+                        ["HitPart"] = {
+                            ["Target"] = "Head",
+                            ["Revaluate"] = {
+                                Enabled = false,
+                                Origin = "Humanoid"
+                            }
+                        },
+                        ["Prediction"] = {
+                            Enabled = false,
+                            Amount = 10
+                        },
+                        ["Assist"] = {
+                            Enabled = false,
+                            Amount = 10
+                        },
+                        ["Panel"] = {
+                            Method = "Mouse",
+                            ["Target"] = false,
+                            ["Lerp"] = {
+                                Type = "Linear",
+                                Direction = "In"
+                            }
+                        }
+                    }
+                }
+            },
+            ["Visual"] = {
+                ["ESP"] = {
+                    Initiate = false,
+                    Enabled = true,
+                    Size = 15,
+                    Font = 2,
+                    Color = Color3.new(244, 245, 243)
+                }
+            }
+        }
+
+        local Drawing, FromRGB = Drawing.new, Color3.fromRGB
+        local UIS, Players, MPS, RunService, Camera, Tween =
+            game:GetService("UserInputService"), -- // Splitta & Hook
+            game:GetService("Players"), -- // Splitta & Hook
+            game:GetService("MarketplaceService"), -- // Splitta & Hook
+            game:GetService("RunService"), -- // Splitta & Hook
+            workspace.CurrentCamera, -- // Splitta & Hook
+            {}
+
+        function Direction(Value, Two) -- // Splitta & Hook
+            return Vector2.new(Value / Function["Scale"].X, Two / Function["Scale"].Y) -- // Splitta & Hook
+        end -- // Splitta & Hook
+
+        local Title = Drawing("Text")
+        local Value = Drawing("Text")
+        local Part = Drawing("Text")
+
+        local function Table()
+            local hitparts = Function.Aiming.Redirection["HitPart"]["Validated Parts"]
+
+            Title.Position, Title.Size =
+                Direction(Camera.ViewportSize.X + 800, Camera.ViewportSize.Y),
+                Function["Title"].Size
+            Value.Position, Value.Size =
+                Direction(Camera.ViewportSize.X, Camera.ViewportSize.Y + 400),
+                Function["Title"].Size
+            Part.Position, Part.Size =
+                Direction(Camera.ViewportSize.X + 800, Camera.ViewportSize.Y + 600),
+                Function["Title"].Size
+
+            if Function["Main"]["UserInterFace"] then
+                Title.Text, Title.Font =
+                    tostring(
+                        Function["Title"].Text ..
+                            " " ..
+                                Function["Title"].Extension.Fringe ..
+                                    game.Stats.Workspace.Heartbeat:GetValueString() .. Function["Title"].Extension.End
+                    ), -- // Splitta & Hook
+                    2
+                Title.Visible, Title.Outline, Title.Color, Title.OutlineColor =
+                    Function["Main"]["VisibleText"],
+                    true,
+                    Function["Color"].Inline,
+                    Function["Color"].Outline
+
+                Value.Font, Value.Visible, Value.Outline, Value.Color, Value.OutlineColor =
+                    2,
+                    Function["Main"]["VisibleText"],
+                    true,
+                    Function.Aiming.Redirection["Drawing"]["Color1"],
+                    Function["Color"].Outline
+
+                Part.Font, Part.Visible, Part.Outline, Part.Color, Part.OutlineColor =
+                    2,
+                    Function["Main"]["VisibleText"],
+                    true,
+                    Function.Aiming.Redirection["Drawing"]["Color2"],
+                    Function["Color"].Outline
+
+                if Function.Aiming.Redirection["Tab"].Enabled then
+                    Value.Text = Function.Aiming.Redirection.Extension.Fringe .. "redirection" .. " = " .. "enabled" --Function.Aiming.Redirection.Extension.End
+                    Part.Text =
+                        tostring(
+                        "hitpart" ..
+                            " = " ..
+                                (Function.Aiming["Redirection"]["HitPart"]["Target"]):lower() ..
+                                    Function.Aiming.Redirection.Extension.End
+                    )
+                else
+                    Part.Text = ""
+                    Value.Text =
+                        Function.Aiming.Redirection.Extension.Fringe ..
+                        "redirection" .. " = " .. "disabled" .. Function.Aiming.Redirection.Extension.End
+                end -- // Splitta & Hook
+            else
+            end -- // Splitta & Hook
+        end -- // Splitta & Hook
+
+        local Utilitie = {}
+        Utilitie.Toggle = false
+
+        UIS.InputBegan:Connect(
+            function(Two, Input)
+                if not Input then
+                    if Two.KeyCode.Name == Function["Main"]["Keybind"] then
+                        Utilitie.Toggle = not Utilitie.Toggle
+                        if Utilitie.Toggle then
+                            RunService:BindToRenderStep("Table!", 1, Table)
+                            for i = 0, 1, Function["Fade Speed"].Intro do
+                                wait(0)
+                                Title.Transparency = i
+                                Value.Transparency = i
+                                Part.Transparency = i
+                            end
+
+                            Function["Main"]["UserInterFace"] = true
+                            Function["Main"]["VisibleText"] = true
+                        elseif not Utilitie.Toggle then
+                            RunService:UnbindFromRenderStep("Table")
+                            Function["Main"]["UserInterFace"] = false
+
+                            Title.Transparency = 0.9
+                            Value.Transparency = 0.9
+                            Part.Transparency = 0.9
+                            wait(Function["Fade Speed"].Outro)
+                            Title.Transparency = 0.8
+                            Value.Transparency = 0.8
+                            Part.Transparency = 0.8
+                            wait(Function["Fade Speed"].Outro)
+                            Title.Transparency = 0.7
+                            Value.Transparency = 0.7
+                            Part.Transparency = 0.7
+                            wait(Function["Fade Speed"].Outro)
+                            Title.Transparency = 0.6
+                            Value.Transparency = 0.6
+                            Part.Transparency = 0.6
+                            wait(Function["Fade Speed"].Outro)
+                            Title.Transparency = 0.5
+                            Value.Transparency = 0.5
+                            Part.Transparency = 0.5
+                            wait(Function["Fade Speed"].Outro)
+                            Title.Transparency = 0.4
+                            Value.Transparency = 0.4
+                            Part.Transparency = 0.4
+                            wait(Function["Fade Speed"].Outro)
+                            Title.Transparency = 0.3
+                            Value.Transparency = 0.3
+                            Part.Transparency = 0.3
+                            wait(Function["Fade Speed"].Outro)
+                            Title.Transparency = 0.2
+                            Value.Transparency = 0.2
+                            Part.Transparency = 0.2
+                            wait(Function["Fade Speed"].Outro)
+                            Title.Transparency = 0.1
+                            Value.Transparency = 0.1
+                            Part.Transparency = 0.1
+                            wait(Function["Fade Speed"].Outro)
+                            Title.Transparency = 0.1
+                            Value.Transparency = 0.1
+                            Part.Transparency = 0.1
+                            wait(Function["Fade Speed"].Outro)
+
+                            Title.Transparency = 0
+                            Value.Transparency = 0
+                            Part.Transparency = 0
+                        end
+                    end
+                end
+            end
+        ) -- // Splitta & Hook
+
+        WTS = (function(Object)
+            local ObjectVector = Camera:WorldToScreenPoint(Object.Position)
+            return Vector2.new(ObjectVector.X, ObjectVector.Y)
+        end)
+
+        local Field = {}
+        Field.MouseLink, Field.Outline, Field.Inline = Drawing("Circle"), Drawing("Circle"), Drawing("Circle")
+
+        Field.Line, Field.LineOutline = Drawing("Line"), Drawing("Line")
+
+        Field.Inline.Visible = Function.Link.Field.Visual.Enabled
+        Field.Inline.Radius = Function.Link.Field.Visual.Radius
+        Field.Inline.Transparency = Function.Link.Field.Visual.Inline.Transparency
+        Field.Inline.Color = Function.Link.Field.Visual.Inline.Color
+
+        Field.Inline.Thickness = 3
+        Field.Outline.Thickness = 4
+
+        Field.Line.Thickness = 3
+        Field.Line.Transparency = 0.8
+        Field.Line.Color = Function.Aiming["Redirection"]["Drawing"]["Line Color"]
+
+        Field.LineOutline.Thickness = 7
+        Field.LineOutline.Transparency = 0.4
+        Field.LineOutline.Color = Function.Aiming["Redirection"]["Drawing"]["Line Outline Color"]
+
+        Field.Inline.Filled = true
+
+        Field.Outline.Filled = false
+        Field.Outline.Visible = Function.Link.Field.Visual.Enabled
+        Field.Outline.Radius = Field.Inline.Radius
+        Field.Outline.Transparency = Function.Link.Field.Visual.Outline.Transparency
+        Field.Outline.Color = Function.Link.Field.Visual.Outline.Color
+        local GameInfo = game.PlaceId
+
+        local LocalPlayer = Players.LocalPlayer
+        local Mouse = LocalPlayer:GetMouse()
+
+        local IgnoreList = {LocalPlayer.Character, Camera}
+
+        local function PartVisible(Part)
+            if Function.Link.Check["Visible"] and Part and Part.Head then
+                local Hit =
+                    workspace:FindPartOnRayWithIgnoreList(
+                    Ray.new(Camera.CFrame.Position, Part.Head.Position - Camera.CFrame.Position),
+                    IgnoreList
+                )
+                if Hit and Hit:IsDescendantOf(Part) then
+                    return true
+                end
+                return false -- // Splitta & Hook
+            else -- // Splitta & Hook
+                return true -- // Splitta & Hook
+            end -- // Splitta & Hook 
+        end -- // Splitta & Hook 
+
+        function ClosestToCursor()
+            local Closest = nil
+            local Distance = Field.Inline.Radius
+            for i, v in pairs(Players:GetPlayers()) do
+                if
+                    v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") and
+                        (Function.Link["Check"]["Team"] == true and (v.Team ~= LocalPlayer.Team) or
+                            Function.Link["Check"]["Team"] ~= true)
+                 then
+                    local MouseLocation = UIS:GetMouseLocation()
+
+                    local Vector, IsVisible = Camera:WorldToViewportPoint(v.Character.HumanoidRootPart.Position)
+                    local Magnitude =
+                        (Vector2.new(Vector.X, Vector.Y) - Vector2.new(MouseLocation.X, MouseLocation.Y)).magnitude
+
+                    if Magnitude < Distance and IsVisible and PartVisible(v.Character) then
+                        Closest = v
+                        Distance = Magnitude
+                    end
+                end
+            end
+
+            if GameInfo == 2788229376 and Function.Link["Check"]["IsDead"] then
+                if
+                    Closest and Closest.Character and not Closest.Character:FindFirstChild("GRABBING_CONSTRAINT") and
+                        not Closest.Character:FindFirstChild("BodyEffects")["K.O"].Value
+                 then
+                    return Closest
+                end
+                return nil
+            end
+            if GameInfo ~= 2788229376 and Function.Link["Check"]["IsDead"] then
+                if Closest and Closest.Character and Closest.Character.Humanoid.Health > 0 then
+                    return Closest
+                end
+                return nil
+            end
+
+            return Closest
+        end
+
+        local function LineToggle(Value)
+            Field.LineOutline.Visible = Value
+            Field.Line.Visible = Value
+        end
+
+        local function LineRedirect()
+            if not Function.Aiming["Redirection"]["Panel"]["Target"].Enabled then
+                LineToggle(false)
+                return
+            end
+
+            local Target = Function.Aiming["Redirection"]["Panel"]["Target"].Player
+            if not Target then
+                LineToggle(false)
+                return
+            end
+            if not Function.Aiming["Redirection"]["Panel"]["Target"].Position.From then
+                return
+            end
+            local Vector, IsVisible =
+                Camera:worldToViewportPoint(
+                Target.Character[Function.Aiming["Redirection"]["HitPart"]["Target"]].Position
+            )
+            local TorsoPosition =
+                Camera:worldToViewportPoint(
+                LocalPlayer.Character[Function.Aiming["Redirection"]["Panel"]["Target"].Position.From].Position
+            )
+
+            LineToggle(IsVisible)
+            if not IsVisible then
+                return
+            end
+
+            Field.LineOutline.From = Vector2.new(TorsoPosition.X, TorsoPosition.Y)
+            Field.LineOutline.To = Vector2.new(Vector.X, Vector.Y)
+            Field.Line.From = Vector2.new(TorsoPosition.X, TorsoPosition.Y)
+            Field.Line.To = Vector2.new(Vector.X, Vector.Y)
+        end
+
+        if Function.Visual["ESP"].Initiate then
+            local function DisplayName(Player)
+                local CreateName = Drawing("Text")
+                local EspNameLoop =
+                    RunService.RenderStepped:Connect(
+                    function()
+                        if
+                            Player.Character ~= nil and Player.Character:FindFirstChild("Humanoid") ~= nil and
+                                Player.Character:FindFirstChild("HumanoidRootPart") ~= nil and
+                                Player.Character.Humanoid.Health > 0 and
+                                Player.Character:FindFirstChild("Head") ~= nil
+                         then
+                            local DistanceA =
+                                (Camera.CFrame.Position - Player.Character:FindFirstChild("Head").Position).Magnitude
+                            local PlayerPosition, IsVisible =
+                                Camera:WorldToViewportPoint(Player.Character.HumanoidRootPart.Position)
+                            local Scaling =
+                                1 / (PlayerPosition.Z * math.tan(math.rad(Camera.FieldOfView * 0.5)) * 2) * 100
+                            local Width, Height = math.floor(40 * Scaling), math.floor(60 * Scaling)
+
+                            if Function["Visual"]["ESP"].Enabled then
+                                CreateName.Visible = IsVisible
+                                CreateName.Color = Function["Visual"]["ESP"].Color
+                                CreateName.Text = Player.Name
+                                CreateName.Center = true
+                                CreateName.Outline = true
+                                CreateName.OutlineColor = Color3.new(0, 0, 0)
+                                CreateName.Position =
+                                    Vector2.new(PlayerPosition.X, PlayerPosition.Y - Height * 0.5 + -15)
+                                CreateName.Font = Function["Visual"]["ESP"].Font
+                                CreateName.Size = Function["Visual"]["ESP"].Size
+
+                                if not Player or not Function["Visual"]["ESP"].Enabled then
+                                -- EspNameLoop:Disconnect()
+                                end
+                            else
+                                CreateName.Visible = false
+                            end
+                        end
+                    end
+                )
+            end
+
+            for i, v in pairs(Players:GetPlayers()) do
+                DisplayName(v)
+
+                v.CharacterAdded:Connect(DisplayName(v))
+            end
+
+            game:GetService("Players").PlayerAdded:Connect(
+                function(v)
+                    if v ~= Players.LocalPlayer then
+                        DisplayName(v)
+                        v.CharacterAdded:Connect(DisplayName(v))
+                    end
+                end
+            )
+        end
+
+        local Toggle = {}
+        Toggle.Redirection, Toggle.Target, Toggle.FOV, Toggle.Aimbot = false, false, false, false
+
+        UIS.InputBegan:Connect(
+            function(Two, Value)
+                if not Value then
+                    if Two.KeyCode.Name == Function.Link.Field.Visual.Keybind then
+                        Toggle.FOV = not Toggle.FOV
+                        if Toggle.FOV then
+                            Field.Inline.Visible = true
+                            Field.Outline.Visible = true
+                        elseif not Toggle.FOV then
+                            Field.Inline.Visible = false
+                            Field.Outline.Visible = false
+                        end
+                    end
+                end
+            end
+        )
+
+        UIS.InputBegan:Connect(
+            function(Two, Value)
+                if not Value then
+                    if Two.KeyCode.Name == Function.Aiming["Redirection"]["Tab"].Keybind then
+                        Toggle.Redirection = not Toggle.Redirection
+                        if Toggle.Redirection then
+                            Function.Aiming["Redirection"]["Tab"]["Enabled"] = true
+                        elseif not Toggle.Redirection then
+                            Function.Aiming["Redirection"]["Tab"]["Enabled"] = false
+                        end
+                    end
+                end
+            end
+        )
+
+        UIS.InputBegan:Connect(
+            function(Two, Value)
+                if not Value then
+                    if Two.KeyCode.Name == Function.Aiming["Redirection"].Panel["Target"]["Keybind"] then
+                        Toggle.Target = not Toggle.Target
+                        if Toggle.Target then
+                            Function.Aiming["Redirection"].Panel["Target"].Enabled = true
+                            Function.Aiming["Redirection"]["Panel"]["Target"].Player = ClosestToCursor()
+
+                            RunService:BindToRenderStep("VisualLine", 1, LineRedirect)
+                        elseif not Toggle.Target then
+                            Function.Aiming["Redirection"].Panel["Target"].Enabled = false
+                            Function.Aiming["Redirection"]["Panel"]["Target"].Player = nil
+                            RunService:UnbindFromRenderStep("VisualLine")
+                            RunService.Heartbeat:Wait()
+                            Field.LineOutline.Visible = false
+                            Field.Line.Visible = false
+                        end
+                    end
+                end
+            end
+        )
+
+        local Mouse = Players.LocalPlayer:GetMouse()
+
+        local function ClosestPart()
+            local MouseToPart
+            local Distance = 1000
+            do
+                for i, v in next, Function.Aiming["Redirection"]["HitPart"]["Validated Part"] do
+                    local Part = ClosestToCursor().Character:FindFirstChild(v)
+                    if Part then
+                        local Magnitude = (WTS(Part) - Vector2.new(Mouse.X, Mouse.Y)).magnitude
+                        if Magnitude < Distance then
+                            MouseToPart = Part
+                            Distance = Magnitude
+                        end
+                    end
+                end
+            end
+            return MouseToPart
+        end
+
+        spawn(
+            function()
+                pcall(
+                    function()
+                        while wait() do
+                            if ClosestToCursor() ~= nil then
+                                -- Character = ClosestToCursor().Character
+                                Function.Aiming["Redirection"]["HitPart"]["Target"] = tostring(ClosestPart())
+                            end
+                        end
+                    end
+                )
+            end
+        )
+
+        local Aimbot = function()
+            local Target = Function.Aiming["Aimbot"]["Panel"]["Panel"]["Target"]
+            if not Target then
+                Target = ClosestToCursor()
+            end
+
+            if
+                Function.Aiming["Aimbot"]["Panel"].Enabled and Target and
+                    Function.Aiming["Aimbot"]["Panel"]["HitPart"]["Target"] ~= nil
+             then
+                local Part = Function.Aiming["Aimbot"]["Panel"]["HitPart"]["Target"]
+                local Position, Movement =
+                    Vector2.new(Mouse.X, Mouse.Y),
+                    Function.Aiming["Aimbot"]["Panel"]["Prediction"].Enabled
+
+                if Function.Aiming["Aimbot"]["Panel"]["Panel"].Method == "Camera" then
+                    --, Enum.EasingStyle[Function.Aiming["Aimbot"].Lerp.Type] , Enum.EasingStyle[Function.Aimboit.Lerp.Direction]
+
+                    Camera.CFrame =
+                        Camera.CFrame:Lerp(
+                        CFrame.new(
+                            Camera.CFrame.Position,
+                            Target.Character[Part].Position +
+                                Target.Character[Part].Velocity /
+                                    Function.Aiming["Aimbot"]["Panel"]["Prediction"].Amount
+                        ),
+                        Function.Aiming["Aimbot"]["Panel"].Assist.Amount / 1000,
+                        Enum.EasingStyle[Function.Aiming["Aimbot"]["Panel"]["Panel"].Lerp.Type],
+                        Enum.EasingDirection[Function.Aiming["Aimbot"]["Panel"]["Panel"].Lerp.Direction]
+                    )
+                elseif Function.Aiming["Aimbot"]["Panel"]["Panel"].Method == "Mouse" then
+                    local A =
+                        Camera:WorldToScreenPoint(
+                        Target.Character[Part].Position +
+                            Target.Character[Part].Velocity / Function.Aiming["Aimbot"]["Panel"]["Prediction"].Amount
+                    )
+                    Position =
+                        mousemoverel(
+                        (A.X - Mouse.X) / Function.Aiming["Aimbot"]["Panel"].Assist.Amount,
+                        (A.Y - Mouse.Y) / Function.Aiming["Aimbot"]["Panel"].Assist.Amount
+                    )
+                end
+
+                if
+                    Function.Aiming["Aimbot"]["Panel"]["HitPart"].Revaluate.Enabled and
+                        Target.Character.Humanoid.FloorMaterial == Enum.Material.Air
+                 then
+                    Part = Function.Aiming["Aimbot"]["Panel"]["HitPart"].Revaluate.Origin
+                end
+            end
+        end
+
+        --[[UIS.InputBegan:Connect(
+        function(Two, Value)
+            if not Value then
+                if Two.KeyCode.Name == Function.Aiming["Aimbot"]["Panel"]["Keybind"] then
+                    Function.Aiming["Aimbot"]["Panel"].Enabled = true
+            
+                    RunService:BindToRenderStep("Aimbot", 1, Aimbot)
+                else
+                    RunService:UnbindFromRenderStep("Aimbot")
+                    Function.Aiming["Aimbot"]["Panel"].Enabled = false
+                    Function.Aiming["Aimbot"]["Panel"]["Target"] = nil
+                end
+            end
+        end
+    )--]]
+        --[[UIS.InputBegan:Connect(function(Input)
+        if Input.KeyCode.Name == Function.Aiming["Aimbot"]["Panel"]["Keybind"]  then
+            Function.Aiming["Aimbot"]["Panel"].Enabled = true
+            RunService:BindToRenderStep("Aimbot", 1, Aimbot)
+    
+        end
+    end)
+    
+    UIS.InputEnded:Connect(function(Input)
+        if Input.KeyCode.Name == Function.Aiming["Aimbot"]["Panel"]["Keybind"] then
+            RunService:UnbindFromRenderStep("Aimbot")
+            Function.Aiming["Aimbot"]["Panel"].Enabled = false
+            Function.Aiming["Aimbot"]["Panel"]["Target"] = nil   
+        end
+    end)--]]
+        Mouse.KeyDown:Connect(
+            function(a)
+                if not (UIS:GetFocusedTextBox()) then
+                    if a == Function.Aiming["Aimbot"]["Panel"]["Keybind"]["Enabled"]:lower() then
+                        Function.Aiming["Aimbot"]["Panel"].Enabled = true
+                        RunService:BindToRenderStep("Aimbot", 1, Aimbot)
+                    end
+                end
+            end
+        )
+
+        Mouse.KeyDown:Connect(
+            function(a)
+                if not (UIS:GetFocusedTextBox()) then
+                    if a == Function.Aiming["Aimbot"]["Panel"]["Keybind"]["Disabled"]:lower() then
+                        RunService:UnbindFromRenderStep("Aimbot")
+                        Function.Aiming["Aimbot"]["Panel"].Enabled = false
+                        Function.Aiming["Aimbot"]["Panel"]["Target"] = nil
+                    end
+                end
+            end
+        )
+
+        local Meta = getrawmetatable(game)
+        local backupindex = Meta.__index
+        setreadonly(Meta, false)
+
+        Meta.__index = function(t, k)
+            if
+                k:lower() == "hit" and
+                    (Function.Aiming.Redirection.Tab.Enabled or Function.Aiming["Redirection"].Panel["Target"].Enabled)
+             then
+                local TargetPlayer
+
+                if Function.Aiming["Redirection"].Panel["Target"].Enabled then
+                    TargetPlayer = Function.Aiming["Redirection"].Panel["Target"].Player
+                else
+                    TargetPlayer = ClosestToCursor()
+                end
+
+                if TargetPlayer and TargetPlayer.Character then
+                    local Chance = Function.Aiming.Redirection.HitChance.Amount >= math.random(1, 100)
+                    if not Chance then
+                        return backupindex(t, k)
+                    end
+
+                    local Part = TargetPlayer.Character[Function.Aiming["Redirection"]["HitPart"].Target]
+                    local Position = Part.Position
+                    local Movement = Vector3.new(0, 0, 0)
+                    if not Function.Link.Check.Resolver then
+                        Movement = Part.Velocity * Function.Aiming.Redirection.Prediction.Amount
+                    else
+                        Movement =
+                            TargetPlayer.Character.Humanoid.WalkSpeed * TargetPlayer.Character.Humanoid.MoveDirection *
+                            Function.Aiming.Redirection.Prediction.Amount
+                    end
+                    if Position then
+                        return Part.CFrame + Movement
+                    end
+                end
+            end
+            return backupindex(t, k)
+        end
+
+        local MouseLoop =
+            RunService.Heartbeat:Connect(
+            function()
+                local MouseLocation = UIS:GetMouseLocation()
+
+                local Targeted = ClosestToCursor()
+                if Function.Link.Field["Visual"]["Control"]["Stick To Target"] and Targeted and Targeted.Character then
+                    local Root = Targeted.Character[Function.Aiming["Redirection"]["HitPart"].Target]
+                    local RootToViewportPoint, IsVisible = Camera.WorldToViewportPoint(Camera, Root.Position)
+
+                    Field.Inline.Position = Vector2.new(RootToViewportPoint.X, RootToViewportPoint.Y)
+                    Field.Outline.Position = Vector2.new(RootToViewportPoint.X, RootToViewportPoint.Y)
+                else
+                    Field.Inline.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
+                    Field.Outline.Position = Vector2.new(MouseLocation.X, MouseLocation.Y)
+                end
+
+                if
+                    Function.Aiming.Redirection.Tab.Enabled and Function.Aiming.Redirection.IndicateMousePos.Enabled and
+                        Targeted and
+                        not Function.Aiming["Redirection"].Panel["Target"].Enabled
+                 then
+                    local Root = Targeted.Character[Function.Aiming["Redirection"]["HitPart"].Target]
+                    local RootToViewportPoint, IsVisible = Camera.WorldToViewportPoint(Camera, Root.Position)
+                    Field.MouseLink.Color = Function.Aiming["Redirection"]["Drawing"]["Indication Color"]
+                    Field.MouseLink.Transparency = 0.5
+                    Field.MouseLink.Filled = true
+                    Field.MouseLink.Radius = 20
+                    Field.MouseLink.Visible = IsVisible
+                    Field.MouseLink.Position = Vector2.new(RootToViewportPoint.X, RootToViewportPoint.Y)
+                else
+                    Field.MouseLink.Position = Vector2.new()
+                    Field.MouseLink.Visible = false
+                end
+            end
+        )
+    end
+)()
